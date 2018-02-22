@@ -1,12 +1,35 @@
-let config = require('./config');
-let express = require('express');
-let cors = require('cors');
-let faker = require('faker');
-let request = require('request');
-let rp = require('request-promise-native');
-let qs = require('querystring');
-let bodyParser = require('body-parser');
-let jwt = require('jsonwebtoken');
+const config = require('./config');
+const express = require('express');
+const cors = require('cors');
+const faker = require('faker');
+const request = require('request');
+const rp = require('request-promise-native');
+const qs = require('querystring');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const schedule = require('node-schedule');
+const winston = require('winston');
+const fs = require('fs');
+const logDir = 'log';
+if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir);
+}
+
+const tsFormat = () => (new Date()).toLocaleTimeString();
+const logger = new (winston.Logger)({
+  transports: [
+    new (winston.transports.Console)({
+      timestamp: tsFormat,
+      colorize: true,
+      level: 'info'
+    }),
+    new (winston.transports.File)({
+      filename: `${logDir}/results.log`,
+      timestamp: tsFormat,
+      level: config.env === 'development' ? 'debug' : 'info'
+    })
+  ]
+});
 
 let users = [
     {
@@ -80,6 +103,13 @@ app.use((req, res, next) => {
     }
 });
 
+// async function run() {
+//     let job = schedule.scheduleJob('*/1 * * * *', async function () {
+//       logger.info('job started');
+//       await parse();
+//     });
+// }
+
 app.listen(config.port, function () {
-    console.log('Started on port: ' + config.port);
+    logger.info('Started on port: ' + config.port);
 });
