@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-	"start": "node index.js",
+    "start": "node index.js",
     "debug": "nodemon --inspect index.js",
     "install-service": "winser -i",
     "uninstall-service": "winser -r"
@@ -12,7 +12,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
+    "faker": "^4.1.0",
+    "jsonwebtoken": "^8.1.1",
+    "querystring": "^0.2.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
     "winser": "^1.0.3"
   }
 }
